@@ -80,8 +80,7 @@ async function handleValidate() {
     <div class="brand-panel">
       <div class="brand-visual"></div>
       <h2>WorkHub</h2>
-      <p>Security is our top priority. Please enter the verification code sent to your inbox to finalize your
-        registration.</p>
+      <p>{{ t('brand.validateDescription') }}</p>
     </div>
 
     <!-- Form Panel -->

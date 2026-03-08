@@ -44,8 +44,7 @@ async function handleRegister() {
     <div class="brand-panel">
       <div class="brand-visual"></div>
       <h2>WorkHub</h2>
-      <p>Elevate your productivity with our next-generation work management platform. Streamline tasks, collaborate
-        seamlessly, and achieve more.</p>
+      <p>{{ t('brand.description') }}</p>
     </div>
 
     <!-- Form Panel (Right Side) -->
@@ -115,6 +114,14 @@ async function handleRegister() {
             <polyline points="12 5 19 12 12 19"/>
           </svg>
         </button>
+
+        <p class="subtitle" style="margin-top: 32px; text-align: center;">
+          {{ t('register.alreadyHaveAccount') }}
+          <RouterLink :to="{ name: 'AuthLogin' }"
+                      style="color: var(--primary); text-decoration: none; font-weight: 600;">
+            {{ t('register.loginLink') }}
+          </RouterLink>
+        </p>
       </form>
     </div>
   </div>
