@@ -2,56 +2,35 @@
 import {ref, onMounted} from 'vue';
 import {useRouter, useRoute} from 'vue-router';
 import {i18n} from '../i18n';
+import {useAuthStore} from '../stores/authStore';
 
 const {t} = i18n;
 const router = useRouter();
 const route = useRoute();
-const loading = ref(false);
-const error = ref('');
-const success = ref('');
+const authStore = useAuthStore();
 const code = ref('');
 const email = ref('');
 
 onMounted(() => {
   email.value = route.query.email as string || '';
   if (!email.value) {
-    error.value = 'E-mail não encontrado. Por favor, tente registrar novamente.';
+    authStore.error = 'E-mail não encontrado. Por favor, tente registrar novamente.';
   }
 });
 
 async function handleValidate() {
   if (code.value.length !== 6) {
-    error.value = t('validate.codeLengthError');
+    authStore.error = t('validate.codeLengthError');
     return;
   }
 
-  loading.value = true;
-  error.value = '';
-
   try {
-    const response = await fetch('http://localhost:8080/auth/register/code', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        email: email.value,
-        code: code.value
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || t('validate.error'));
-    }
-
-    success.value = t('validate.success');
+    await authStore.validate(email.value, code.value);
     setTimeout(() => {
       router.push({name: 'AuthRegister'});
     }, 2000);
   } catch (err: any) {
-    error.value = err.message;
-  } finally {
-    loading.value = false;
+    // Error is handled by the store
   }
 }
 </script>
@@ -61,14 +40,15 @@ async function handleValidate() {
     <h1>{{ t('validate.title') }}</h1>
     <p class="subtitle">{{ t('validate.subtitle') }} <strong>{{ email }}</strong>.</p>
 
-    <div v-if="success" class="success-banner">
-      {{ success }}
+    <div v-if="authStore.success" class="success-banner">
+      {{ authStore.success }}
     </div>
 
     <form v-else @submit.prevent="handleValidate">
       <div class="form-group">
-        <label>{{ t('validate.codeLabel') }}</label>
+        <label for="validateCode">{{ t('validate.codeLabel') }}</label>
         <input
+            id="validateCode"
             v-model="code"
             type="text"
             maxlength="6"
@@ -78,12 +58,12 @@ async function handleValidate() {
         />
       </div>
 
-      <div v-if="error" class="error-msg" style="margin-bottom: 16px;">
-        {{ error }}
+      <div v-if="authStore.error" class="error-msg" style="margin-bottom: 16px;">
+        {{ authStore.error }}
       </div>
 
-      <button type="submit" class="btn-primary" :disabled="loading || !email">
-        {{ loading ? t('validate.loading') : t('validate.button') }}
+      <button type="submit" class="btn-primary" :disabled="authStore.loading || !email">
+        {{ authStore.loading ? t('validate.loading') : t('validate.button') }}
       </button>
 
       <p class="subtitle" style="margin-top: 24px; text-align: center;">
