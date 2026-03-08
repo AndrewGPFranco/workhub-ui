@@ -12,10 +12,12 @@ const translations = {
             username: 'Username',
             email: 'E-mail',
             password: 'Senha',
+            confirmPassword: 'Confirmar Senha',
             dateBirth: 'Data de Nascimento',
             button: 'Registrar',
             loading: 'Enviando...',
-            error: 'Erro ao realizar registro'
+            error: 'Erro ao realizar registro',
+            passwordMismatch: 'As senhas não coincidem'
         },
         validate: {
             title: 'Validar Conta',
@@ -38,10 +40,12 @@ const translations = {
             username: 'Username',
             email: 'Email',
             password: 'Password',
+            confirmPassword: 'Confirm Password',
             dateBirth: 'Date of Birth',
             button: 'Register',
             loading: 'Sending...',
-            error: 'Error performing registration'
+            error: 'Error performing registration',
+            passwordMismatch: 'Passwords do not match'
         },
         validate: {
             title: 'Validate Account',
@@ -64,10 +68,12 @@ const translations = {
             username: 'Usuario',
             email: 'Correo electrónico',
             password: 'Contraseña',
+            confirmPassword: 'Confirmar Contraseña',
             dateBirth: 'Fecha de nacimiento',
             button: 'Registrarse',
             loading: 'Enviando...',
-            error: 'Error al realizar el registro'
+            error: 'Error al realizar el registro',
+            passwordMismatch: 'Las contraseñas no coinciden'
         },
         validate: {
             title: 'Validar Cuenta',
