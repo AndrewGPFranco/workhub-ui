@@ -14,11 +14,9 @@ const digits = ref(['', '', '', '', '', '']);
 const inputs = ref<HTMLInputElement[]>([]);
 
 onMounted(() => {
-  email.value = route.query.email as string || '';
+  email.value = authStore.tempEmail || route.query.email as string || '';
   if (!email.value) {
-    authStore.error = 'E-mail não encontrado. Por favor, tente registrar novamente.';
   }
-  // Auto focus first digit
   nextTick(() => {
     inputs.value[0]?.focus();
   });
@@ -66,7 +64,7 @@ async function handleValidate() {
   try {
     await authStore.validate(email.value, code);
     setTimeout(() => {
-      router.push({name: 'AuthRegister'});
+      router.push({name: 'Home'});
     }, 2000);
   } catch (err: any) {
     // Error is handled by store
@@ -86,7 +84,12 @@ async function handleValidate() {
     <!-- Form Panel -->
     <div class="form-panel" style="display: flex; flex-direction: column; justify-content: center;">
       <h1>{{ t('validate.title') }}</h1>
-      <p class="subtitle">{{ t('validate.subtitle') }} <strong>{{ email }}</strong>.</p>
+      <p v-if="email" class="subtitle">{{ t('validate.subtitle') }} <strong>{{ email }}</strong>.</p>
+      
+      <div v-else class="input-container" style="margin-bottom: 24px;">
+        <label for="email-fallback">{{ t('register.email') }}</label>
+        <input id="email-fallback" v-model="email" type="email" class="input-field" :placeholder="t('register.email')" required/>
+      </div>
 
       <div v-if="authStore.success" class="success-banner" style="margin-top: 0; margin-bottom: 32px;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"

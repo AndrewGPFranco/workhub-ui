@@ -28,9 +28,9 @@ async function handleRegister() {
     // Only send relevant fields to the server
     const {confirmPassword, ...registerData} = form.value;
     await authStore.register(registerData);
+    authStore.tempEmail = form.value.email;
     router.push({
-      name: 'AuthValidate',
-      query: {email: form.value.email}
+      name: 'AuthValidate'
     });
   } catch (err: any) {
     // Error is handled by the store

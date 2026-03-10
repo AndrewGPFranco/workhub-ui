@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', () => {
     const error = ref('');
     const success = ref('');
     const token = ref(localStorage.getItem('token') || '');
+    const tempEmail = ref('');
 
     async function handleResponse(response: Response) {
         const contentType = response.headers.get('content-type');
@@ -123,6 +124,7 @@ export const useAuthStore = defineStore('auth', () => {
         error,
         success,
         token,
+        tempEmail,
         register,
         validate,
         login,
